@@ -1,5 +1,5 @@
 #!/bin/bash
-##Sonja_Lecic_04_2019
+##Author:Sonja_Lecic_04_2019
 
 # yarn queue name
 queue=pg4
