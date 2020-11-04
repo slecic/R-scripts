@@ -1,6 +1,8 @@
 
 ##### Ace resistant mutations origin #####
 
+###Author:Sonja_Lecic_07_2019
+
 ### Haplotype pipeline for Portugal, South Africa and Florida haplotypes ####
 
 
