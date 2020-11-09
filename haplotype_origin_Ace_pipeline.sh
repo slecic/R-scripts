@@ -6,7 +6,7 @@
 ### Haplotype pipeline for Portugal, South Africa and Florida haplotypes ####
 
 
-# clean bam files #
+#### clean bam files ####
 for f in $(ls $bam_files)
 do
          X=$(basename $f .bam)
@@ -14,7 +14,7 @@ do
 done
 
 
-# sort #
+#### sort ####
 for f in $(ls $bam_files)
 do
         X=$(basename $f .clean)
@@ -22,14 +22,14 @@ do
 done
 
 
-# remove duplicates #
+### remove duplicates ####
 for f in $(ls $bam_files)
 do
          X=$(basename $f .bam)
          picard CleanSam I=$f O=/Users/slecic/Documents/Portugal_Ace_freebayes/bam_files/"$X".clean
 done
 
-# filter for quality > 20 #
+### filter for quality > 20 ###
 for f in $(ls $bam_files)
 do
         X=$(basename $f .remdup)
@@ -37,7 +37,15 @@ do
 done
 
 
-# extract 3R chromosome #
+### add read groups ##
+for f in $(ls $fq20)
+do
+        X=$(basename $f .rg)
+        picard AddOrReplaceReadGroups I="$X" O="$X".rg RGID="$X" RGLB="$X" RGPL="$X" RGPU="$X" RGSM="$X"
+done
+
+
+### extract 3R chromosome ###
 for f in $(ls $haplotype_origin_ace)
 do
         X=$(basename $f .fq20)
@@ -45,12 +53,9 @@ do
 done
 
 
-### add read group ##
-picard AddOrReplaceReadGroups I=Dsim_Portugal_I022_aceRegion.bam O=Dsim_Portugal_I022_aceRegion_rg.bam RGID=22 RGLB=lib22 RGPL=illumina22 RGPU=unit22 RGSM=DsimPor22
-
-
 ## call SNPs on a population #
 freebayes -f /Users/slecic/Documents/Portugal_Ace_freebayes/dsimM252.1.1.clean.wMel_wRi_Lactobacillus_Acetobacter.fa -F 0.02 -C 2 -m 20 -q 20 *aceRegion_rg.bam | vcffilter -f "QUAL > 20" > Portres3mut.vcf
+
 
 ## estimate nucleotide diversity with vcftools ##
 
