@@ -10,7 +10,7 @@
 for f in $(ls $bam_files)
 do
          X=$(basename $f .bam)
-         picard CleanSam I=$f O=/Users/slecic/Documents/Portugal Ace freebayes/bam_files/"$X".clean
+         picard CleanSam I=$f O=/Users/slecic/Documents/Portugal_Ace_freebayes/bam_files/"$X".clean
 done
 
 
@@ -18,7 +18,7 @@ done
 for f in $(ls $bam_files)
 do
         X=$(basename $f .clean)
-        samtools sort $f -o /Users/slecic/Documents/Portugal Ace freebayes/bam_files/"$X".sort --threads 8
+        samtools sort $f -o /Users/slecic/Documents/Portugal_Ace_freebayes/bam_files/"$X".sort --threads 8
 done
 
 
@@ -26,14 +26,14 @@ done
 for f in $(ls $bam_files)
 do
          X=$(basename $f .bam)
-         picard CleanSam I=$f O=/Users/slecic/Documents/Portugal Ace freebayes/bam_files/"$X".clean
+         picard CleanSam I=$f O=/Users/slecic/Documents/Portugal_Ace_freebayes/bam_files/"$X".clean
 done
 
 # filter for quality > 20 #
 for f in $(ls $bam_files)
 do
         X=$(basename $f .remdup)
-        samtools view -q 20 -f 0x0002 -F 0x0004 -F 0x0008 -b $f > /Users/slecic/Documents/Portugal Ace freebayes/bam_files/"$X".fq20
+        samtools view -q 20 -f 0x0002 -F 0x0004 -F 0x0008 -b $f > /Users/slecic/Documents/Portugal_Ace_freebayes/bam_files/"$X".fq20
 done
 
 
@@ -50,8 +50,7 @@ picard AddOrReplaceReadGroups I=Dsim_Portugal_I022_aceRegion.bam O=Dsim_Portugal
 
 
 ## call SNPs on a population #
-freebayes -f /Users/slecic/Documents/Portugal\ Ace\ freebayes/dsimM252.1.1.clean.wMel_wRi_Lactobacillus_Acetobacter.fa -F 0.02 -C 2 --pooled-continuous -m 20 -q 20 Dsim_Portugal_I001_aceRegion_rg.bam Dsim_Portugal_I002_aceRegion_rg.bam Dsim_Portugal_I003_aceRegion_rg.bam Dsim_Portugal_I005_aceRegion_rg.bam Dsim_Portugal_I006_aceRegion_rg.bam Dsim_Portugal_I007_aceRegion_rg.bam Dsim_Portugal_I008_aceRegion_rg.bam Dsim_Portugal_I017_aceRegion_rg.bam Dsim_Portugal_I021_aceRegion_rg.bam Dsim_Portugal_I026_aceRegion_rg.bam Dsim_Portugal_I034_aceRegion_rg.bam Dsim_Portugal_I038_aceRegion_rg.bam Dsim_Portugal_I039_aceRegion_rg.bam Dsim_Portugal_I043_aceRegion_rg.bam Dsim_Portugal_I044_aceRegion_rg.bam Dsim_Portugal_I045_aceRegion_rg.bam Dsim_Portugal_I047_aceRegion_rg.bam Dsim_Portugal_I051_aceRegion_rg.bam Dsim_Portugal_I059_aceRegion_rg.bam | vcffilter -f "QUAL > 20" > Portres3mut.vcf
-
+freebayes -f /Users/slecic/Documents/Portugal_Ace_freebayes/dsimM252.1.1.clean.wMel_wRi_Lactobacillus_Acetobacter.fa -F 0.02 -C 2 -m 20 -q 20 *aceRegion_rg.bam | vcffilter -f "QUAL > 20" > Portres3mut.vcf
 
 ## estimate nucleotide diversity with vcftools ##
 
